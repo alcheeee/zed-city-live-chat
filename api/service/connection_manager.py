@@ -25,6 +25,7 @@ class ConnectionManager:
 	async def register_user(self, websocket: WebSocket, user: User):
 		self.user_data[websocket] = user
 
+	async def send_history(self, websocket: WebSocket):
 		if self.global_messages:
 			await websocket.send_json({
 				"type": "history",

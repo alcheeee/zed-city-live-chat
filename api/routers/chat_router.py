@@ -17,6 +17,8 @@ async def websocket_endpoint(websocket: WebSocket):
 		user = User(**user_data)
 		await manager.register_user(websocket, user)
 
+		await manager.send_history(websocket)
+
 		while True:
 			data = await websocket.receive_text()
 
