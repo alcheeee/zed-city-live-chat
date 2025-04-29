@@ -11,6 +11,7 @@ from api.routers import router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator:
+	print('Server running')
 	to_thread.current_default_thread_limiter().total_tokens = config.FASTAPI_THREAD_TOKENS
 
 	yield
