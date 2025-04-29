@@ -1,0 +1,19 @@
+{
+  "build": {
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "./Dockerfile",
+    "watchPatterns": [
+      "pyproject.toml",
+      "poetry.lock",
+      "api/**",
+      "railway.json",
+      "Dockerfile"
+    ]
+  },
+  "deploy": {
+    "healthcheckPath": "/api/status/",
+    "healthcheckTimeout": 300,
+    "restartPolicyType": "ALWAYS",
+    "restartPolicyMaxRetries": 10
+  }
+}

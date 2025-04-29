@@ -11,7 +11,7 @@ COPY start.sh /app/start.sh
 
 COPY api ./api
 
-RUN poetry install --without dev --no-root
+RUN poetry install --no-root
 
 RUN chmod +x /app/start.sh
 CMD ["/app/start.sh"]

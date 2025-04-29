@@ -2,9 +2,9 @@
 .git/
 .github/
 .mypy_cache/
-tests/
 
 .gitignore
 .dockerignore
 .flake8
 Dockerfile
+zed-live-chat.user.js
