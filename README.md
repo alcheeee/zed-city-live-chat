@@ -14,11 +14,9 @@ How it works,
 
 Features:
 - Mention other users `@chee hello`
-- Global chat (anyone with this script will be able to talk!
+- Global chat (anyone with this script will be able to talk!)
 - Global chat is cached up to 25 messages, though it's acting a bit weird right now -- will fix.
-- "Private" faction chat, factions chats are not cached.
+- "Private" faction chat
 
 DISCLAIMER:
 I am paying for the server out of pocket, therefore I have set low usage limits. If the server gets too loaded it will shut down and users will not be able to use the chat. I reserve the right to shut down the server at any point. If the developers of Zed City have a problem with this script, please reach out to me on discord.
-
-It will grab your username and you faction id, send it to my server, and in turn allow to you chat with whoever has the script, as well as your faction.

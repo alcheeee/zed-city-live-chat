@@ -4,14 +4,12 @@ from fastapi import WebSocket
 from typing import Dict, List, Set
 from datetime import datetime
 from api.schemas import MessageType, Channels, MessageData, User
-
+from api.service.redis_manager import RedisPubSubManager
 
 class WebSocketManager:
 	def __init__(self, redis_url='redis://redis:6379', max_saved_messages=25):
 		self.rooms: Dict[str, List[WebSocket]] = {}
 		self.user_connections: Dict[WebSocket, User] = {}
-
-		from .redis_manager import RedisPubSubManager
 		self.pubsub_client = RedisPubSubManager(
 			redis_url=redis_url,
 			max_saved_messages=max_saved_messages
