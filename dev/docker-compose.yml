@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: dev/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MAX_SAVED_MESSAGES=20
+      - FASTAPI_THREAD_TOKENS=40
+    depends_on:
+      - redis
+    restart: always
+    volumes:
+      - ../api:/app/api
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    restart: always
+
+volumes:
+  redis-data:

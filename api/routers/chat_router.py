@@ -1,43 +1,68 @@
 import json
+from datetime import datetime
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
-from api.service import manager
-from api.schemas import User
+from starlette.websockets import WebSocketState
+from api.schemas import MessageType, Channels, MessageData, User
 
-
-router = APIRouter()
+router = APIRouter(prefix='/chat')
 
 
 @router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-	await manager.connect(websocket)
+	socket_manager = websocket.app.state.socket_manager
+	await websocket.accept()
 
 	try:
 		user_data = await websocket.receive_json()
 		user = User(**user_data)
-		await manager.register_user(websocket, user)
 
-		await manager.send_history(websocket)
+		await socket_manager.connect_user(websocket, user)
+		await socket_manager.send_history(websocket)
+
+		welcome_message = {
+			"type": MessageType.MESSAGE,
+			"sender": "System",
+			"message": f"Welcome, {user.username}! You are connected to the chat.",
+			"channel": Channels.GLOBAL.value,
+			"timestamp": datetime.now().isoformat(timespec='seconds')
+		}
+		await websocket.send_json(welcome_message)
+		faction_prefix_len = len("/faction ")
 
 		while True:
 			data = await websocket.receive_text()
-
 			if data.startswith("/faction "):
-				faction_message = data[len("/faction "):]
+				faction_message = data[faction_prefix_len:]
 
 				if user.in_faction:
-					await manager.broadcast_to_faction(user.in_faction, faction_message, user.username)
+					faction_channel = f"{Channels.FACTION.value}:{user.in_faction}"
+					await socket_manager.broadcast_message(
+						channel=faction_channel,
+						sender=user.username,
+						message=faction_message
+					)
 				else:
-					await websocket.send_json({
-						"type": "message",
+					error_message = {
+						"type": MessageType.MESSAGE,
 						"sender": "System",
 						"message": "You're not in a faction.",
-						"channel": "faction",
+						"channel": Channels.GLOBAL.value,
 						"timestamp": datetime.now().isoformat(timespec='seconds')
-					})
+					}
+					await websocket.send_json(error_message)
 			else:
-				await manager.broadcast(data, user.username)
+				await socket_manager.broadcast_message(
+					channel=Channels.GLOBAL.value,
+					sender=user.username,
+					message=data
+				)
 
 	except WebSocketDisconnect:
-		await manager.disconnect(websocket)
+		await socket_manager.disconnect_user(websocket)
 
+	except Exception as e:
+		print(f"WebSocket error: {str(e)}")
+		try:
+			await socket_manager.disconnect_user(websocket)
+		except:
+			pass
