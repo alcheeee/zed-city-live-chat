@@ -15,8 +15,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator:
 	to_thread.current_default_thread_limiter().total_tokens = config.FASTAPI_THREAD_TOKENS
 
 	socket_manager = WebSocketManager(
-		redis_host=config.REDIS_HOST,
-		redis_port=config.REDIS_PORT,
+		redis_url=config.REDIS_URL,
 		max_saved_messages=config.MAX_SAVED_MESSAGES
 	)
 	app.state.socket_manager = socket_manager

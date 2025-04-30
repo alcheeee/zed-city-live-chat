@@ -7,14 +7,13 @@ from api.schemas import MessageType, Channels, MessageData, User
 
 
 class WebSocketManager:
-	def __init__(self, redis_host='localhost', redis_port=6379, max_saved_messages=25):
+	def __init__(self, redis_url='redis://redis:6379', max_saved_messages=25):
 		self.rooms: Dict[str, List[WebSocket]] = {}
 		self.user_connections: Dict[WebSocket, User] = {}
 
 		from .redis_manager import RedisPubSubManager
 		self.pubsub_client = RedisPubSubManager(
-			host=redis_host,
-			port=redis_port,
+			redis_url=redis_url,
 			max_saved_messages=max_saved_messages
 		)
 		self.listeners: Set[asyncio.Task] = set()

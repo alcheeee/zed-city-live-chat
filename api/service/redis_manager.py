@@ -7,18 +7,16 @@ from api.schemas import MessageType, Channels, MessageData, User
 
 
 class RedisPubSubManager:
-	def __init__(self, host='localhost', port=6379, max_saved_messages=25):
-		self.redis_host = host
-		self.redis_port = port
+	def __init__(self, redis_url: str, max_saved_messages=25):
+		self.redis_url = redis_url
 		self.pubsub = None
 		self.redis_connection: aioredis.Redis = None
 		self.max_saved_messages = max_saved_messages
 		self.subscribed_channels = set()
 
 	async def _get_redis_connection(self) -> aioredis.Redis:
-		return aioredis.Redis(
-			host=self.redis_host,
-			port=self.redis_port,
+		return aioredis.from_url(
+			url=self.redis_url,
 			decode_responses=True,
 			auto_close_connection_pool=False
 		)

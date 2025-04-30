@@ -6,8 +6,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - REDIS_URL=redis://redis:6379
       - MAX_SAVED_MESSAGES=20
       - FASTAPI_THREAD_TOKENS=40
     depends_on:
