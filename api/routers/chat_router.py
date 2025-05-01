@@ -1,7 +1,6 @@
 import json
 from datetime import datetime
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from starlette.websockets import WebSocketState
 from api.schemas import MessageType, Channels, MessageData, User
 
 router = APIRouter(prefix='/chat')
@@ -22,7 +21,7 @@ async def websocket_endpoint(websocket: WebSocket):
 		welcome_message = {
 			"type": MessageType.MESSAGE,
 			"sender": "System",
-			"message": f"Welcome, {user.username}! You are connected to the chat.",
+			"message": f"Welcome, {user.username}! There are {len(socket_manager.user_connections)} users in chat!",
 			"channel": Channels.GLOBAL.value,
 			"timestamp": datetime.now().isoformat(timespec='seconds')
 		}
