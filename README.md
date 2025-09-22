@@ -8,9 +8,8 @@ People are able to change their username/faction that is sent to my server, acce
 
 How it works,
 
-    Your username and faction id are intercepted from a Zed City response (am not including the original script that did this).
-    My server takes in your username and faction id as authentication (though any authentication token could be used if it were part of the official game).
-    Now your connected!
+- Your username and faction id are intercepted from a Zed City response (am not including the original script that did this).
+- My server takes in your username and faction id as authentication (though any authentication token could be used if it were part of the official game). Now your connected!
 
 Notes:
 - For faction chat to work, the message needs to be prefixed with /faction (like so: "`/faction Hey guys 1 more needed for raid.`", and the user must be in a faction.
@@ -22,6 +21,7 @@ Features:
 - Global chat (anyone with this script will be able to talk!)
 - Global chat is cached up to 25 messages, though it's acting a bit weird right now -- will fix.
 - "Private" faction chat
+
 
 DISCLAIMER:
 I'm making this repository public. The developers have released their own built-in live chat.
